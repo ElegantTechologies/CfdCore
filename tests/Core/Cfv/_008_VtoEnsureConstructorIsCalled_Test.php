@@ -22,10 +22,13 @@ class _008_VtoEnsureConstructorIsCalled_Test extends TestCase
 
     function test_Num()
     {
-
-
         $c = new Vto8_whereWeForgetToCallConstructorClass('bob');
-        #$this->assertTrue(false, 'I don't know how to ');
+        #$this->assertTrue($c->value, 'I dont know how to '); this won't catch the error - mainly a php limitation
+        try {
+            $this->assertTrue($c->getPropertyNames(), "ElegantTechnologies\Cfd\Core\ErrorFromCfd: Vto8_whereWeForgetToCallConstructorClass did not get it's construction called.");
+        } catch (\ElegantTechnologies\Cfd\Core\ErrorFromCfd $e) {
+            $this->assertTrue(true, 'good');
+        }
 
     }
 

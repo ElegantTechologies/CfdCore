@@ -25,7 +25,7 @@ class BeEven extends \ElegantTechnologies\Cfd\Core\Vto {
 
 */
 
-class Vto implements \ElegantTechnologies\Validations\Contracts\ArrayableShallow
+class Vto #implements \ElegantTechnologies\Validations\Contracts\ArrayableShallow
 {
     private $_value; #our little hack to keep others from updating $that->value
     private $_wasParentCalled = false;

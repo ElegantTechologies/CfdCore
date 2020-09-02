@@ -16,3 +16,15 @@ composer install
 Roadmap
 -------
 9/20' Finish transition to php 8
+
+
+php8-dev
+    
+    phpunit...
+        Use composer 2.x
+                -try-
+            composer self-update --preview
+        Tell composer to not freak on phpunit requirements
+            See: https://github.com/sebastianbergmann/phpunit/issues/4325
+                -try-
+            composer require --dev phpunit/phpunit --ignore-platform-req=php phpunit/phpunit ^9.3\n

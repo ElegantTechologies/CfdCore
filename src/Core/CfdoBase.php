@@ -9,7 +9,7 @@ class Vto1 extends \ElegantTechnologies\Cfd\Core\Vto
 {
     public function __construct(
         public string $value,
-    ) {parent::__construct();}
+    ) {parent::__construct(...func_get_args());}
 }
 
 --or--
@@ -25,7 +25,7 @@ class BeEven extends \ElegantTechnologies\Cfd\Core\Vto {
 
 */
 
-class Vto #implements \ElegantTechnologies\Validations\Contracts\ArrayableShallow
+class Cfdo #implements \ElegantTechnologies\Validations\Contracts\ArrayableShallow
 {
     private $_value; #our little hack to keep others from updating $that->value
     private $_wasParentCalled = false;
@@ -87,6 +87,7 @@ class Vto #implements \ElegantTechnologies\Validations\Contracts\ArrayableShallo
      * Get the instance as an array.
      */
     public function toShallowArray() : array {
+        $this->_ensureInited();
         return ['value'=>$this->_value];
 
     }

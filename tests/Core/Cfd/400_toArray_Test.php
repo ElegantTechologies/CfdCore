@@ -7,7 +7,7 @@ namespace testworld;
 use PHPUnit\Framework\TestCase;
 
 
-class FunnyNumbers32 extends \ElegantTechnologies\Cfd\Core\CfdoBase
+class FunnyNumbers32 extends \ElegantTechnologies\Cfd\Core\Cfd
 {
 
     static $version = 4;

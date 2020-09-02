@@ -21,21 +21,21 @@ namespace ElegantTechnologies\Cfd\Lib;
 */
 
 
-abstract class Cfes extends \ElegantTechnologies\Cfd\Core\Vto {
+abstract class Cfes extends \ElegantTechnologies\Cfd\Core\Cfv {
     #abstract public array $value;
 
     public function __construct(private array $_ArrEnumValuePossibilities){
         $maybeValidItems = $this->value;
         if (!is_array($this->value)) {
             $meClass = $this::class;
-            throw new \ElegantTechnologies\Cfd\Core\ErrorFromCfd("'$meClass::value' must be declared as  an array", -87682345);
+            throw new \ElegantTechnologies\Cfd\Core\CfdError("'$meClass::value' must be declared as  an array", -87682345);
         }
         foreach ($maybeValidItems as $maybeValidItem) {
              $hasPropertyThere = in_array($maybeValidItem, $_ArrEnumValuePossibilities) ? 1 : 0;
              if (!$hasPropertyThere){
                    $csvOptions = implode(', ', $_ArrEnumValuePossibilities);
                     $meClass = $this::class;
-                   throw new \ElegantTechnologies\Cfd\Core\ErrorFromCfd("'$maybeValidItem' is not a valid enumeration for $meClass::valuePossibilities([$csvOptions])",-87687545);
+                   throw new \ElegantTechnologies\Cfd\Core\CfdError("'$maybeValidItem' is not a valid enumeration for $meClass::valuePossibilities([$csvOptions])", -87687545);
                }
         }
 

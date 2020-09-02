@@ -20,17 +20,17 @@ class SubGreeting extends Greeting
 
 }
 
-class DtoDummyDum extends \ElegantTechnologies\Cfd\Core\Vto
+class DtoDummyDum extends \ElegantTechnologies\Cfd\Core\Cfv
 {
     public function __construct(public \testworld\Greeting $value)  {parent::__construct();}
 }
 
-class SmallPrimes extends \ElegantTechnologies\Cfd\Core\Vto
+class SmallPrimes extends \ElegantTechnologies\Cfd\Core\Cfv
 {
     public function __construct(public int $value) {
 
         if (!in_array($value, [1, 3, 5, 7])) {
-            throw new \ElegantTechnologies\Cfd\Core\ErrorFromCfd("$value is not prime");
+            throw new \ElegantTechnologies\Cfd\Core\CfdError("$value is not prime");
                 }
 
         parent::__construct();
@@ -57,8 +57,8 @@ final class _200_ObjectsAsParams_Test extends TestCase
 
         try {
             $obj = new FunnyNumbers(2);
-            $this->assertTrue(false, 'ElegantTechnologies\Cfd\Core\ErrorFromCfd: 2 is not prime');
-        } catch (\ElegantTechnologies\Cfd\Core\ErrorFromCfd $e) {
+            $this->assertTrue(false, 'ElegantTechnologies\Cfd\Core\CfdError: 2 is not prime');
+        } catch (\ElegantTechnologies\Cfd\Core\CfdError $e) {
                $this->assertTrue(true, 'ok');
         }
 

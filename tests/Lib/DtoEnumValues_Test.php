@@ -29,7 +29,7 @@ final class TestDtoEnumPhase2 extends TestCase {
         try {
             $obj = new \testworld\CfdEnumPhase2(['EnumValues' => ['Explosion']]);
             $this->assertTrue(0, "Should not get this far cuz not an valid type");
-        } catch (\ElegantTechnologies\Cfd\Core\ErrorFromCfd $e) {
+        } catch (\ElegantTechnologies\Cfd\Core\CfdError $e) {
             $this->assertTrue(true, "Good - that faiiled as expected");
         }
 
@@ -44,7 +44,7 @@ final class TestDtoEnumPhase2 extends TestCase {
         try {
             $obj = new CfdEnumPhase2(['EnumValues' => ['Draft', 'Explosion']]);
             $this->assertTrue(0, "Should not get this far cuz Explosion is a valid value");
-        } catch (\ElegantTechnologies\Cfd\Core\ErrorFromCfd $e) {
+        } catch (\ElegantTechnologies\Cfd\Core\CfdError $e) {
             $this->assertTrue(true, "Good - that faiiled as expected");
         }
 

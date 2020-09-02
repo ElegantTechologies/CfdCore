@@ -39,7 +39,7 @@ final class Cfes_Test extends TestCase {
         try {
             $obj = new \testworld\CfesPhaseSimple(['Explosion']);
             $this->assertTrue(0, "Exception: 'Explosion' is not a valid enumeration for testworld\CfePhaseSimple::valuePossibilities([Draft, RollOut, LaunchPad, OnOrbit, Descent, Museum, Trash])");
-        } catch (\ElegantTechnologies\Cfd\Core\ErrorFromCfd $e) {
+        } catch (\ElegantTechnologies\Cfd\Core\CfdError $e) {
             $this->assertTrue(true, "Good - that failed as expected");
         }
 
@@ -48,8 +48,8 @@ final class Cfes_Test extends TestCase {
     function testArrayOnlyForVal() {
         try {
             $obj = new CfesWrongType('one');
-            $this->assertTrue(0, "ElegantTechnologies\Cfd\Core\ErrorFromCfd: 'testworld\CfesWrongType::value' must be declared as  an array");
-        } catch (\ElegantTechnologies\Cfd\Core\ErrorFromCfd $e) {
+            $this->assertTrue(0, "ElegantTechnologies\Cfd\Core\CfdError: 'testworld\CfesWrongType::value' must be declared as  an array");
+        } catch (\ElegantTechnologies\Cfd\Core\CfdError $e) {
             $this->assertTrue(true, "Good - that failed as expected");
         }
     }

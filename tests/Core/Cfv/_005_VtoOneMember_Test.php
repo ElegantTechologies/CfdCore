@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 
 
-class Vto5 extends \ElegantTechnologies\Cfd\Core\Vto
+class Cfv5 extends \ElegantTechnologies\Cfd\Core\Cfv
 {
     public function __construct(
         public string $value,
@@ -15,7 +15,7 @@ class Vto5 extends \ElegantTechnologies\Cfd\Core\Vto
     } // ok
 }
 
-class Vto5_wrongValueName_evenThoughThereIsOnlyOne extends \ElegantTechnologies\Cfd\Core\Vto
+class Cfv5_wrongValueName_evenThoughThereIsOnlyOne extends \ElegantTechnologies\Cfd\Core\Cfv
 {
     public function __construct(
         public string $val #misnamed: Must be value
@@ -31,7 +31,7 @@ class _005_VtoOneMember_Test extends TestCase
     function test_Num()
     {
     try {
-        $c = new Vto5('jj');
+        $c = new Cfv5('jj');
         $this->assertTrue(true, "ok");
          $this->assertTrue(false, 'ArgumentCountError: Too few arguments to function Vto5::__construct(), 1 passed in');
     } catch (\ArgumentCountError $e) {
@@ -39,9 +39,9 @@ class _005_VtoOneMember_Test extends TestCase
     }
 
     try {
-        $c = new Vto5(value:'jj', value2:'rohrer');
-        $this->assertTrue(false, "ElegantTechnologies\Cfd\Core\ErrorFromCfd: There are '2' public properties.  Vto can only have one and it must be named 'value'");
-    } catch (\ElegantTechnologies\Cfd\Core\ErrorFromCfd $e) {
+        $c = new Cfv5(value:'jj', value2:'rohrer');
+        $this->assertTrue(false, "ElegantTechnologies\Cfd\Core\CfdError: There are '2' public properties.  Vto can only have one and it must be named 'value'");
+    } catch (\ElegantTechnologies\Cfd\Core\CfdError $e) {
             $this->assertTrue(
                     true,
                     "This should have failed hard (and gotten here) .  " . $this::class. "  " . __LINE__
@@ -50,9 +50,9 @@ class _005_VtoOneMember_Test extends TestCase
 
 
          try {
-            $c = new Vto5_wrongValueName_evenThoughThereIsOnlyOne(val:'jj');
-            $this->assertTrue(false, "ElegantTechnologies\Cfd\Core\ErrorFromCfd: This is a Vto, so 'Vto5_wrongValueName_evenThoughThereIsOnlyOne::val' must be renamed to 'Vto5_wrongValueName_evenThoughThereIsOnlyOne::value'.  Vto can only have one and it must be named 'value'");
-        } catch (\ElegantTechnologies\Cfd\Core\ErrorFromCfd $e) {
+            $c = new Cfv5_wrongValueName_evenThoughThereIsOnlyOne(val:'jj');
+            $this->assertTrue(false, "ElegantTechnologies\Cfd\Core\CfdError: This is a Vto, so 'Vto5_wrongValueName_evenThoughThereIsOnlyOne::val' must be renamed to 'Vto5_wrongValueName_evenThoughThereIsOnlyOne::value'.  Vto can only have one and it must be named 'value'");
+        } catch (\ElegantTechnologies\Cfd\Core\CfdError $e) {
             $this->assertTrue(
                 true,
                 "This should have failed hard (and gotten here) .  " . $this::class. "  " . __LINE__

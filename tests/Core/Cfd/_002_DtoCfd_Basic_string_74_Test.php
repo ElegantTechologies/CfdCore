@@ -3,42 +3,42 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-class Naked extends  \ElegantTechnologies\Cfd\Core\CfdoBase
+class Naked extends  \ElegantTechnologies\Cfd\Core\Cfd
 {
 }
 
-class Simple_0y_Cfd extends  \ElegantTechnologies\Cfd\Core\CfdoBase
+class Simple_0y_Cfd extends  \ElegantTechnologies\Cfd\Core\Cfd
 {
     public $caresGiven; // Must be set, but not type enforced.
 }
 
-class Simple_0z_Cfd extends  \ElegantTechnologies\Cfd\Core\CfdoBase
+class Simple_0z_Cfd extends  \ElegantTechnologies\Cfd\Core\Cfd
 {
     public ?int $caresGiven = null; // Just proving this compiles
 }
-class Simple_0_Cfd extends  \ElegantTechnologies\Cfd\Core\CfdoBase
+class Simple_0_Cfd extends  \ElegantTechnologies\Cfd\Core\Cfd
 {
     public int $caresGiven = 0; // must only create w/ an optional int
 }
-class Simple_0b_Cfd extends  \ElegantTechnologies\Cfd\Core\CfdoBase
+class Simple_0b_Cfd extends  \ElegantTechnologies\Cfd\Core\Cfd
 {
     public ?int $caresGiven = 0; // must only create w/ an optional int, or null
 }
 
-class Simple_0c_Cfd extends  \ElegantTechnologies\Cfd\Core\CfdoBase
+class Simple_0c_Cfd extends  \ElegantTechnologies\Cfd\Core\Cfd
 {
     public int $caresGiven; // must create with a mandatory int
 }
-class Simple_0d_Cfd extends  \ElegantTechnologies\Cfd\Core\CfdoBase
+class Simple_0d_Cfd extends  \ElegantTechnologies\Cfd\Core\Cfd
 {
     public ?int $caresGiven; // must create with a mandatory int, or null
 }
 
-class Simple_0e_Cfd extends  \ElegantTechnologies\Cfd\Core\CfdoBase
+class Simple_0e_Cfd extends  \ElegantTechnologies\Cfd\Core\Cfd
 {
      #public string $caresGiven2 = 0; // wouldn't event compile cuz type mismatch
 }
-class Simple_1_Cfd extends  \ElegantTechnologies\Cfd\Core\CfdoBase
+class Simple_1_Cfd extends  \ElegantTechnologies\Cfd\Core\Cfd
 {
     public string $name; // simple var, but it had better be a string when assigning
 }
@@ -50,7 +50,7 @@ class Simple_1_Cfd extends  \ElegantTechnologies\Cfd\Core\CfdoBase
  *  // Any public property w/o a default is required to be set at creation
  *  // Public properties can be read, but not updated. To update, create a new copy with different inputs
  */
-class NamedThingsCfd extends \ElegantTechnologies\Cfd\Core\CfdoBase
+class NamedThingsCfd extends \ElegantTechnologies\Cfd\Core\Cfd
 {
     # protected const  META_PREFIXES = ['doesHave'];  //
     #  public CONST ALLOW_UPCONVERT_TYPES = ['integer','string'];

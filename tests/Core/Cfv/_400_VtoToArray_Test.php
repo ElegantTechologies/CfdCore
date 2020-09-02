@@ -7,7 +7,7 @@ namespace testworld;
 use PHPUnit\Framework\TestCase;
 
 
-class FunnyNumber400 extends \ElegantTechnologies\Cfd\Core\Vto
+class FunnyNumber400 extends \ElegantTechnologies\Cfd\Core\Cfv
 {
     public function __construct(public int $value)
     {

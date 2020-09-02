@@ -23,8 +23,8 @@ final class CfeQuick_Test extends TestCase
 
         try {
             $e = new \ElegantTechnologies\Cfd\Lib\Cfez(['active', 'inactive'], value:'done', );
-            $this->assertTrue(false, "ElegantTechnologies\Cfd\Core\ErrorFromCfd: 'done' is not a valid enumeration for ElegantTechnologies\Cfd\Lib\CfeQuick::valuePossibilities([active, inactive])");
-        } catch (\ElegantTechnologies\Cfd\Core\ErrorFromCfd $exception) {
+            $this->assertTrue(false, "ElegantTechnologies\Cfd\Core\CfdError: 'done' is not a valid enumeration for ElegantTechnologies\Cfd\Lib\CfeQuick::valuePossibilities([active, inactive])");
+        } catch (\ElegantTechnologies\Cfd\Core\CfdError $exception) {
            $this->assertTrue(true, "Good");
         }
     }

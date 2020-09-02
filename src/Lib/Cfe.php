@@ -21,7 +21,7 @@ namespace ElegantTechnologies\Cfd\Lib;
 */
 
 
-abstract class Cfe extends \ElegantTechnologies\Cfd\Core\Vto {
+abstract class Cfe extends \ElegantTechnologies\Cfd\Core\Cfv {
     #abstract public string $value;
     public function __construct(private array $_ArrEnumValuePossibilities){
             $maybeValidItem = $this->value;
@@ -30,7 +30,7 @@ abstract class Cfe extends \ElegantTechnologies\Cfd\Core\Vto {
            if (!$hasPropertyThere){
                $csvOptions = implode(', ', $_ArrEnumValuePossibilities);
                 $meClass = $this::class;
-               throw new \ElegantTechnologies\Cfd\Core\ErrorFromCfd("'$maybeValidItem' is not a valid enumeration for $meClass::valuePossibilities([$csvOptions])",-87687545);
+               throw new \ElegantTechnologies\Cfd\Core\CfdError("'$maybeValidItem' is not a valid enumeration for $meClass::valuePossibilities([$csvOptions])",-87687545);
            }
            parent::__construct();
     }

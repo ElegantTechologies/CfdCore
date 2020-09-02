@@ -5,7 +5,7 @@ declare(strict_types=1);
 use PHPUnit\Framework\TestCase;
 
 
-class CfdoLove extends \ElegantTechnologies\Cfd\Core\CfdoBase {
+class CfdoLove extends \ElegantTechnologies\Cfd\Core\Cfd {
 
     public int $isInLove;
 

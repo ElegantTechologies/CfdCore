@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 
 
-class ALuckyNumber extends \ElegantTechnologies\Cfd\Core\CfdoBase
+class ALuckyNumber extends \ElegantTechnologies\Cfd\Core\Cfd
 {
 
     public int $Value;
@@ -40,7 +40,7 @@ class ALuckyNumberConvertable extends ALuckyNumber
     }
 }
 
-class Profile extends \ElegantTechnologies\Cfd\Core\CfdoBase
+class Profile extends \ElegantTechnologies\Cfd\Core\Cfd
 {
     public ALuckyNumber $LuckyNum;
 

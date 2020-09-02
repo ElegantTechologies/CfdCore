@@ -2,7 +2,7 @@
 namespace ElegantTechnologies\Cfd\Lib;
 
 
-class CfvDateTime extends \ElegantTechnologies\Cfd\Core\Vto {
+class CfvDateTime extends \ElegantTechnologies\Cfd\Core\Cfv {
     public function __construct(public string $value) {
         $maybeValidValue = $value;
         $format = 'Y-m-d H:i:s';
@@ -13,7 +13,7 @@ class CfvDateTime extends \ElegantTechnologies\Cfd\Core\Vto {
         if ($maybeValidValue == $t) {
             // good
         } else {
-            throw new \ElegantTechnologies\Cfd\Core\ErrorFromCfd("$t !=$maybeValidValue Please pass data as exaclty $format ");
+            throw new \ElegantTechnologies\Cfd\Core\CfdError("$t !=$maybeValidValue Please pass data as exaclty $format ");
             #return new \SchoolTwist\Validations\Returns\DtoValid(['isValid' => false, 'enumReason'=>'NotRoundtripping','message'=>"$t !=$maybeValidValue Please pass data as exaclty $format " ]);
         }
     }

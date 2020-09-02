@@ -1,7 +1,7 @@
 <?php
 namespace ElegantTechnologies\Cfd\Lib;
 
-class CfvYmd extends \ElegantTechnologies\Cfd\Core\Vto {
+class CfvYmd extends \ElegantTechnologies\Cfd\Core\Cfv {
      public function __construct(public string $value) {
          $maybeValidValue = $value;
         $t = date("Y-m-d",strtotime($maybeValidValue)); // https://xkcd.com/1179/
@@ -9,7 +9,7 @@ class CfvYmd extends \ElegantTechnologies\Cfd\Core\Vto {
         if ($maybeValidValue == $t) {
             # ok
         } else {
-            throw new \ElegantTechnologies\Cfd\Core\ErrorFromCfd("$t !=$maybeValidValue");
+            throw new \ElegantTechnologies\Cfd\Core\CfdError("$t !=$maybeValidValue");
             #return new \SchoolTwist\Validations\Returns\DtoValid(['isValid' => false, 'enumReason'=>'NotRoundtripping','message'=>"$t !=$maybeValidValue" ]);
         }
     }

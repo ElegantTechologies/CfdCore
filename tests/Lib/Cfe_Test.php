@@ -30,7 +30,7 @@ final class Cfe_Test extends TestCase {
         try {
             $obj = new \testworld\CfePhaseSimple('Explosion');
             $this->assertTrue(0, "Exception: 'Explosion' is not a valid enumeration for testworld\CfePhaseSimple::valuePossibilities([Draft, RollOut, LaunchPad, OnOrbit, Descent, Museum, Trash])");
-        } catch (\ElegantTechnologies\Cfd\Core\ErrorFromCfd $e) {
+        } catch (\ElegantTechnologies\Cfd\Core\CfdError $e) {
             $this->assertTrue(true, "Good - that failed as expected");
         }
 

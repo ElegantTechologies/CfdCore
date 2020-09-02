@@ -17,7 +17,7 @@ class BeEven extends \ElegantTechnologies\Cfd\Core\Vto {
     public function __construct(public int $value) {
         $isEven = ($value % 2) === 0;
         if (!$isEven) {
-            throw new \ElegantTechnologies\Cfd\Core\ErrorFromCfd("$value is not an even number");
+            throw new \ElegantTechnologies\Cfd\Core\CfdError("$value is not an even number");
         }
         parent::__construct();
     }
@@ -25,7 +25,7 @@ class BeEven extends \ElegantTechnologies\Cfd\Core\Vto {
 
 */
 
-class Vto extends CfdoBase
+class Cfv extends Cfd
 {
     public function __construct() {
         parent::__construct();
@@ -34,7 +34,7 @@ class Vto extends CfdoBase
         if (count($this->_wrappedValues) != 1 || array_key_first($this->_wrappedValues) != 'value') {
             $csvPropertyNames = implode(', ',array_keys($this->_wrappedValues) );
             $meName = $this::class;
-            throw new ErrorFromCfd(
+            throw new CfdError(
                 "$meName is a Vto, which can  have one, and only property. It must be named 'value'. You currently have these properties: ($csvPropertyNames)"
             );
         }

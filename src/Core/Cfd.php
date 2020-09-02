@@ -17,7 +17,7 @@ class BeEven extends \ElegantTechnologies\Cfd\Core\Vto {
     public function __construct(public int $value) {
         $isEven = ($value % 2) === 0;
         if (!$isEven) {
-            throw new \ElegantTechnologies\Cfd\Core\ErrorFromCfd("$value is not an even number");
+            throw new \ElegantTechnologies\Cfd\Core\CfdError("$value is not an even number");
         }
         parent::__construct();
     }
@@ -25,7 +25,7 @@ class BeEven extends \ElegantTechnologies\Cfd\Core\Vto {
 
 */
 
-class CfdoBase implements \ElegantTechnologies\Validations\Contracts\ArrayableShallow
+class Cfd implements \ElegantTechnologies\Validations\Contracts\ArrayableShallow
 {
 
     private $_wasParentCalled = false;
@@ -51,7 +51,7 @@ class CfdoBase implements \ElegantTechnologies\Validations\Contracts\ArrayableSh
     {
         if (!array_key_exists($name,$this->_wrappedValues)) {
             $csvPropertyNames = implode(', ',array_keys($this->_wrappedValues));
-            throw new ErrorFromCfd("$name is not a public property of ".$this::class. "::[$csvPropertyNames]");
+            throw new CfdError("$name is not a public property of ".$this::class. "::[$csvPropertyNames]");
         }
         return $this->_wrappedValues[$name];
     }
@@ -59,12 +59,12 @@ class CfdoBase implements \ElegantTechnologies\Validations\Contracts\ArrayableSh
     public function __set($name, $value)
     {
         $meName = $this::class;
-        throw new ErrorFromCfd("$meName is a Cfd/Cfv, so you can not update $meName::$name. $meName->$name is read only, so you can do \$o = new $meName(x); \$v = \$o->$name, but not \$o->$name = x2;");
+        throw new CfdError("$meName is a Cfd/Cfv, so you can not update $meName::$name. $meName->$name is read only, so you can do \$o = new $meName(x); \$v = \$o->$name, but not \$o->$name = x2;");
     }
 
     private function _ensureInited() {
         if (!$this->_wasParentCalled) {
-            throw new ErrorFromCfd($this::class." did not get it's construction called.");
+            throw new CfdError($this::class." did not get it's construction called.");
         }
     }
 

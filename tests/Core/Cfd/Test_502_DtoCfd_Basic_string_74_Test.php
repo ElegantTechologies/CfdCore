@@ -6,12 +6,14 @@ use PHPUnit\Framework\TestCase;
 
 
 class CfdoLove extends \ElegantTechnologies\Cfd\Core\Cfd {
-
-    public int $isInLove;
-
-    public string $name;
+    public function __construct(
+        public int $isInLove,
+        public string $name,
+    ){
+        parent::__construct(...func_get_args());
+    }
 }
-class Test_t02_DtoCfd_Basic_string_74 extends TestCase
+class Test_502_DtoCfd_Basic_string_74_Test extends TestCase
 {
     function testPreValidationsSubmission_byProperty()
     {
@@ -19,8 +21,10 @@ class Test_t02_DtoCfd_Basic_string_74 extends TestCase
             'isInLove' => 1,
             'name'=>'Lisa'
         ];
-        $obj = new CfdoLove($asrData);
-        #var_dump($obj->toArray());
+        $obj = new CfdoLove(...$asrData);
+        $this->assertTrue($obj->isInLove == 1, "ouch");
+
+        $obj = CfdoLove::newViaAsr($asrData);
         $this->assertTrue($obj->isInLove == 1, "ouch");
     }
 

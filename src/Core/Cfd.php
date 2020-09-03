@@ -36,11 +36,17 @@ class Cfd implements \ElegantTechnologies\Validations\Contracts\ArrayableShallow
             // make all public properties now be private to avoid accidental access
             // Helps ensure it can't be changed externally.  Unsetting it lets __get get invoked. Getter/Setter Hack.
             $reflectionClass = new \ReflectionClass($this::class);
-        $asrPublicProperties = $reflectionClass->getProperties(\ReflectionProperty::IS_PUBLIC);
+        $asrPublicProperties = $reflectionClass->getProperties(\ReflectionProperty::IS_PUBLIC + !\ReflectionProperty::IS_STATIC);
+        #$asrStaticProperties = $reflectionClass->getProperties(\ReflectionProperty::IS_STATIC );// I forget... xor(?)
         foreach ($asrPublicProperties as $asrPublicProperty) {
             $propertyName = $asrPublicProperty->name;
-            $this->_wrappedValues[$propertyName] = $this->$propertyName;
-            unset($this->$propertyName);
+            #if (!array_key_exists($propertyName, $asrStaticProperties)) {
+            // expect issues here when public and static... worry later.
+
+                $this->_wrappedValues[$propertyName] = $this->$propertyName;
+                unset($this->$propertyName);
+            #}
+
         }
 
         $this->_wasParentCalled = true; // CAUTION: It is pointless to check this via __get or __set cause they'd only be called if the property got unset
@@ -50,8 +56,8 @@ class Cfd implements \ElegantTechnologies\Validations\Contracts\ArrayableShallow
     public function __get($name)
     {
         if (!array_key_exists($name,$this->_wrappedValues)) {
-            $csvPropertyNames = implode(', ',array_keys($this->_wrappedValues));
-            throw new CfdError("$name is not a public property of ".$this::class. "::[$csvPropertyNames]");
+            $csvPropertyNames = implode(', ',($this->_wrappedValues));
+            throw new CfdError("$name is not a public property of ".$this::class. "::[{$csvPropertyNames}]"); #not seeting the keys?  9/2/20' issue with public static got this called when a public static wasn't already set.
         }
         return $this->_wrappedValues[$name];
     }
@@ -82,7 +88,85 @@ class Cfd implements \ElegantTechnologies\Validations\Contracts\ArrayableShallow
         return array_keys( $this->_wrappedValues);
     }
 
+    public static function newViaAsr(array $values) : self {
+        $meName = get_called_class();
+        // if you see Error: Unknown named parameter $Slug here, then I bet you have class properties instead of properties as part of the constructor
+        #print_r([__FILE__,__LINE__,$meName, $values]);
+        #return new $meName(...$values);
+        try {
+            return new $meName(...$values);
+        } catch (\TypeError $e) {
+            // see if these can be upconverted
+            $thisReflector = new \ReflectionClass(static::class);
+            foreach ($values as $propertyName=>$value) {
+                $cfdBaseClassName = Cfd::class;;
+                $typeOfNamedProperty = $thisReflector->getProperty($propertyName)->getType().''; // testworld\ALuckyNumber|string
+                $typeOfPassedValue = gettype($value);
+                if ($typeOfPassedValue == 'object') {
+                    $typeOfPassedValue = get_class($value);
+                }
+                $typeOfPassedValue = ($typeOfPassedValue == 'integer') ? 'int' : $typeOfPassedValue;
+                $isGoodEnoughAsPassed = ($typeOfPassedValue == $typeOfNamedProperty) || is_a($typeOfPassedValue, $typeOfNamedProperty.'', true);
+                #print_r([__FILE__,__LINE__,"$propertyName is type: ".$typeOfNamedProperty]);
+                #$isTargetCfd = is_a($typeOfNamedProperty,$cfdBaseClassName, true);
+                if ($isGoodEnoughAsPassed) {
+                    #print_r([__FILE__,__LINE__,"Good Enough: $propertyName($typeOfPassedValue) is_a $typeOfNamedProperty"]);
+                } else {
+                    $isDestinedForCfd = is_a($typeOfNamedProperty, $cfdBaseClassName, true) ? 1 : 0;
+                    $isTargetCfd = is_subclass_of($typeOfNamedProperty, '\\'.$cfdBaseClassName, true);
+                    if (!$isDestinedForCfd) {
+                        throw new CfdError(
+                            "Type Error: $propertyName was passed as type $typeOfPassedValue but it must be  $typeOfNamedProperty or $typeOfNamedProperty must derive from $cfdBaseClassName so that it might be up-converted."
+                        );
+                    } else {
+                        // This is a cfd - maybe we can convert it
+                        $convertedValue = $value = new $typeOfNamedProperty($value); // FYI: Throws a \TypeError if still not the right type
+                        $values[$propertyName] = $convertedValue;
+                        $typeOfPassedValueOrig = $typeOfPassedValue;
+                        $typeOfPassedValue = gettype($values[$propertyName]);
+                        if ($typeOfPassedValue == 'object') {
+                            $typeOfPassedValue = get_class($value);
+                        }
+                        $isGoodEnoughAsPassed = ($typeOfPassedValue == $typeOfNamedProperty) || is_a($typeOfPassedValue, $typeOfNamedProperty.'', true) ? 1 : 0;
+                        //                        print_r(
+                        //                            [
+                        //                                __FILE__,
+                        //                                __LINE__,
+                        //                                "CFD: Converted $propertyName($typeOfPassedValueOrig) to specked type $typeOfNamedProperty. New type is $typeOfPassedValue isGoodEnoughAsPassed/upconverted($isGoodEnoughAsPassed)"
+                        //                            ]
+                        //                        );
+                    }
+                }
+            }
+            return new $meName(...$values);
+        }
+    }
 
+    /*
+     * This should be in a utility area...
+    Given an array of dto items, and a key, return an array
+    class DtoTab {
+         public $Slug;
+        public $Text
+    }
+    $arrTabs = [
+        new DtoTab(['Slug'=>'Merge','Text'=>'Combine']),
+        new DtoTab(['Slug'=>'Trash','Text'=>'Delete'),
+    ];
+    $selected = $_REQUEST['Tab'];// say, 'Trash',
+    $slugOptions = Cfd::arrCfd_toColumn($arrTabs,'Slug');// now [Merge,Trash]
+    if (in_array($selected,Cfd_Base::arrDto_column($arrTabs,'Slug')) {
+        ....
+
+    */
+    public static function arrCfd_toColumn(array $arrayOfCfdObjects, $subKey): array
+    { // inspired by php's array_column
+        $arr = array_map(function (Cfd $Dto) use ($subKey) {
+            return $Dto->$subKey;
+        }, $arrayOfCfdObjects);
+
+        return $arr;
+    }
 }
 
 

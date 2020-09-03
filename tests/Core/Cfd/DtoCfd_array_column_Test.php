@@ -6,25 +6,27 @@ use PHPUnit\Framework\TestCase;
 
 
 class DtoTabForTestingStuff extends \ElegantTechnologies\Cfd\Core\Cfd {
-    public string $Slug;
-    public string $Text;
+    public function __construct(
+        public string $Slug,
+        public string $Text,
+        ) {parent::__construct(...func_get_args());}
 }
 
 
 
-final class TestDtoCfd_array_column extends TestCase {
+final class DtoCfd_array_column_Test extends TestCase {
     function testBasics() {
-        $obj = new \testworld\DtoTabForTestingStuff(['Slug' => 'Delete', 'Text'=>'Trash']);
+        $obj = DtoTabForTestingStuff::newViaAsr(['Slug' => 'Delete', 'Text'=>'Trash']);
         $this->assertTrue(isset($obj), "Good");
 
     }
 
     function testMore() {
         $arrTabs = [
-            new \testworld\DtoTabForTestingStuff(['Slug' => 'Delete', 'Text'=>'Trash']),
-           new \testworld\DtoTabForTestingStuff(['Slug' => 'Merging', 'Text'=>'Shrink']),
+             \testworld\DtoTabForTestingStuff::newViaAsr(['Slug' => 'Delete', 'Text'=>'Trash']),
+           \testworld\DtoTabForTestingStuff::newViaAsr(['Slug' => 'Merging', 'Text'=>'Shrink']),
             ];
-        $arrSlugs = \ElegantTechnologies\Cfd\Core\Cfd::arrDto_column($arrTabs, 'Slug');
+        $arrSlugs = \ElegantTechnologies\Cfd\Core\Cfd::arrCfd_toColumn($arrTabs, 'Slug');
           $this->assertTrue($arrSlugs[0] == 'Delete', "ok");
           $this->assertTrue($arrSlugs[1] == 'Merging', "ok");
           $this->assertTrue(count($arrSlugs) ==2 , "ok");

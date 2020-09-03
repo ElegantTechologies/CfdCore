@@ -3,7 +3,7 @@ declare(strict_types=1);
 namespace SchoolTwist\Cfd\Lib;
 
 
-abstract class CfdEnumValues extends \SchoolTwist\Cfd\Core\CfdBase
+abstract class CfdoEnumValues extends \ElegantTechnologies\Cfd\Core\Cfd
 {
     /** @var array */
     public array $EnumValues;

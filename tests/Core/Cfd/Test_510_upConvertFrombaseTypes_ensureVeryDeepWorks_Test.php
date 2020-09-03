@@ -11,15 +11,11 @@ use PHPUnit\Framework\TestCase;
 
 class ALuckyNumber2 extends \ElegantTechnologies\Cfd\Core\Cfd
 {
-    public int $Value;
-
-    public static function Value_Validates($val) : \SchoolTwist\Validations\Returns\DtoValid {
-        $isValid = (in_array($val, [1,3,5,11,88]));
-        if ($isValid) {
-            return new \SchoolTwist\Validations\Returns\DtoValid(['isValid' => true]);
-        } else {
-            return new \SchoolTwist\Validations\Returns\DtoValid(['isValid' => false, 'enumReason'=>'unlucky']);
+     public function __construct(public int $Value) {
+        if (!in_array($Value, [1,3,5,11,88])) {
+            throw new \ElegantTechnologies\Cfd\Core\CfdError("$Value is very not-lucky.");
         }
+        parent::__construct(...func_get_args());
     }
 }
 
@@ -34,7 +30,9 @@ class EvenLuckierNumber extends ALuckyNumber2Convertable
 
 class Profile2 extends \ElegantTechnologies\Cfd\Core\Cfd
 {
-    public \testworld510\EvenLuckierNumber $ConvertableLuck;
+    public function __construct(public \testworld510\EvenLuckierNumber $ConvertableLuck) {
+        parent::__construct(...func_get_args());
+    }
 
 }
 
@@ -42,7 +40,7 @@ class Profile2 extends \ElegantTechnologies\Cfd\Core\Cfd
 final class Test_510_upConvertFrombaseTypes_ensureVeryDeepWorks_Test extends TestCase
 {
 
-
+JJ - you left off expecting to re-implement preValidateProperty & preValidateSubmission/preValidateProperties from CfdBase into Cfd
     function testHW()
     {
 

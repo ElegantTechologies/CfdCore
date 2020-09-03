@@ -11,10 +11,11 @@ use PHPUnit\Framework\TestCase;
 
 class ALuckyNumber2 extends \ElegantTechnologies\Cfd\Core\Cfd
 {
-    public int $Value;
-
-    public static function Value_Validates($val) : \SchoolTwist\Validations\Returns\DtoValid {
-        return new \SchoolTwist\Validations\Returns\DtoValid(['isValid'=>(in_array($val, [1,3,5,11,88]))]);
+    public function __construct(public int $Value) {
+        if (!in_array($Value, [1,3,5,11,88])) {
+            throw new \ElegantTechnologies\Cfd\Core\CfdError("$Value is very not-lucky.");
+        }
+        parent::__construct(...func_get_args());
     }
 }
 
@@ -47,9 +48,13 @@ class EvenLuckierNumber extends ALuckyNumber2Convertable
 
 class Profile2 extends \ElegantTechnologies\Cfd\Core\Cfd
 {
-    public \testworld\ALuckyNumber2 $LuckyNum;
-    public \testworld\EvenLuckierNumber $ConvertableLuck;
-    public int $Age;
+    public function __construct(
+        public \testworld\ALuckyNumber2 $LuckyNum,
+        public \testworld\EvenLuckierNumber $ConvertableLuck,
+        public int $Age,
+    ) {
+        parent::__construct(...func_get_args());
+    }
 }
 
 
@@ -63,15 +68,15 @@ final class Test_505_upConvertFrombaseTypes_ensureVeryDeepWorks_Test extends Tes
     {
 
         $asrData = [
-            'LuckyNum' => new ALuckyNumber2(['Value'=>5]),
-            'ConvertableLuck' => new EvenLuckierNumber(['Value'=>88]),
+            'LuckyNum' => new ALuckyNumber2(5),
+            'ConvertableLuck' => new EvenLuckierNumber(88),
             'Age'=>49,
         ];
-        $obj = new Profile2($asrData);
+        $obj =  Profile2::newViaAsr($asrData);
         $this->assertTrue($obj->ConvertableLuck->Value == 88, '');
         $this->assertTrue($obj->LuckyNum->Value == 5, '');
         $this->assertTrue($obj->Age == 49, '');
-        $this->assertTrue(is_array($obj->toDeepArray()), 'ok');
+        $this->assertTrue(is_array($obj->toShallowArray()), 'ok');
     }
 
 
@@ -82,26 +87,26 @@ final class Test_505_upConvertFrombaseTypes_ensureVeryDeepWorks_Test extends Tes
     {
         $asrData = [
             'LuckyNum' => '3',
-            'ConvertableLuck' => new ALuckyNumber2Convertable(['Value'=>88]),
+            'ConvertableLuck' => new ALuckyNumber2Convertable(88),
             'Age'=>49,
         ];
 
         try {
-            $obj = new Profile2($asrData);
+            $obj = Profile2::newViaAsr($asrData);
             $this->assertTrue(false, '');
         } catch (\Throwable $ed) {
                $this->assertTrue(true, '');
         }
 
         $asrData = [
-            'LuckyNum' => new ALuckyNumber2(['Value'=>5]),
+            'LuckyNum' => new ALuckyNumber2(5),
             'Age' => 49,
              'ConvertableLuck' => '88', // fails because we don't have a mechanism to convert from string
 
 
         ];
         try {
-            $obj = new Profile2($asrData);
+            $obj = Profile2::newViaAsr($asrData);
             $this->assertTrue(false, '');
         } catch (\Throwable $ed) {
                $this->assertTrue(true, '');
@@ -114,11 +119,11 @@ final class Test_505_upConvertFrombaseTypes_ensureVeryDeepWorks_Test extends Tes
     {
 
          $asrData = [
-            'LuckyNum' => new ALuckyNumber2(['Value'=>5]),
+            'LuckyNum' => new ALuckyNumber2(5),
             'Age' => 48,
              'ConvertableLuck' => 88,
         ];
-        $obj = new Profile2($asrData);
+        $obj = Profile2::newViaAsr($asrData);
 //        print_r($obj);
 //        exit;
         $this->assertTrue($obj->ConvertableLuck->Value == 88, '');

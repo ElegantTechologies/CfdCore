@@ -13,7 +13,7 @@ class ALuckyNumber2 extends \ElegantTechnologies\Cfd\Core\Cfd
 {
      public function __construct(public int $Value) {
         if (!in_array($Value, [1,3,5,11,88])) {
-            throw new \ElegantTechnologies\Cfd\Core\CfdError("$Value is very not-lucky.");
+            throw new \ElegantTechnologies\Cfd\Core\CfdErrorValidation("$Value is very not-lucky.");
         }
         parent::__construct(...func_get_args());
     }
@@ -37,38 +37,39 @@ class Profile2 extends \ElegantTechnologies\Cfd\Core\Cfd
 }
 
 
-final class Test_510_upConvertFrombaseTypes_ensureVeryDeepWorks_Test extends TestCase
+final class Test_510_preValidate extends TestCase
 {
 
-JJ - you left off expecting to re-implement preValidateProperty & preValidateSubmission/preValidateProperties from CfdBase into Cfd
+#JJ - you left off expecting to re-implement preValidatePropertyValue & preValidateSubmission/preValidateProperties from CfdBase into Cfd
     function testHW()
     {
 
         // base
-        $dtoValid = EvenLuckierNumber::preValidateProperty('Value', 11, null);
-        $this->assertTrue($dtoValid->isValid == true, '');
+        $dtoValid = EvenLuckierNumber::preValidatePropertyValue('Value', 11, null);
+        $this->assertTrue($dtoValid->isValid == true, $dtoValid->message);
 
 
-        $dtoValid = EvenLuckierNumber::preValidateProperty('Value', 12, null);
+        $dtoValid = EvenLuckierNumber::preValidatePropertyValue('Value', 12, null);
+        #print_r($dtoValid);
         $this->assertTrue($dtoValid->isValid == false, '');
-        $this->assertTrue($dtoValid->enumReason == 'unlucky', " dtoValid->enumReason({$dtoValid->enumReason})");
-
-        // composite
-        $asrData['ConvertableLuck'] = new EvenLuckierNumber(['Value'=>11]);
-        $dtoValid = Profile2::preValidateSubmission($asrData);
+        $this->assertTrue($dtoValid->enumReason == 'CfdErrorValidation', " dtoValid->enumReason({$dtoValid->enumReason})");
+//
+//        // composite
+        $asrData['ConvertableLuck'] = new EvenLuckierNumber(11);
+        $dtoValid = Profile2::preValidatePropertyValues($asrData);
         $this->assertTrue($dtoValid->isValid == true, '');
-
-
+//
+//
         $asrData['ConvertableLuck'] = 11;
-        $dtoValid = Profile2::preValidateSubmission($asrData);
-
+        $dtoValid = Profile2::preValidatePropertyValues($asrData);
+//
         $this->assertTrue($dtoValid->isValid == true, '');
-
-
+//
+//
         $asrData['ConvertableLuck'] = 12;
-        $dtoValid = Profile2::preValidateSubmission($asrData);
+        $dtoValid = Profile2::preValidatePropertyValues($asrData);
         $this->assertTrue($dtoValid->isValid == false, '');
-        $this->assertTrue($dtoValid->enumReason == 'unlucky', " dtoValid->enumReason({$dtoValid->enumReason})");
+        $this->assertTrue($dtoValid->enumReason == 'CfdErrorValidation', " dtoValid->enumReason({$dtoValid->enumReason})");
 
     }
 

@@ -7,7 +7,7 @@ class BeEven extends \ElegantTechnologies\Cfd\Core\Cfv {
     public function __construct(public int $value) {
         $isEven = ($value % 2) === 0;
         if (!$isEven) {
-            throw new \ElegantTechnologies\Cfd\Core\CfdError("$value is not an even number");
+            throw new \ElegantTechnologies\Cfd\Core\CfdErrorValidation("$value is not an even number");
         }
         parent::__construct();
     }
@@ -38,7 +38,7 @@ class _006_VtoValidation_Test extends TestCase
         try {
             $obj = new BeEven(1);
             $this->assertTrue(0, "Should not get this far");
-        } catch (\ElegantTechnologies\Cfd\Core\CfdError $e) {
+        } catch (\ElegantTechnologies\Cfd\Core\CfdErrorValidation $e) {
             $this->assertTrue(true, "Good - that faiiled as expected");
         }
 
@@ -51,7 +51,7 @@ class _006_VtoValidation_Test extends TestCase
         try {
             $obj = new BeEven(-3);
             $this->assertTrue(0, "Should not get this far");
-        } catch (\ElegantTechnologies\Cfd\Core\CfdError $e) {
+        } catch (\ElegantTechnologies\Cfd\Core\CfdErrorValidation $e) {
             $this->assertTrue(true, "Good - that faiiled as expected");
         }
 
@@ -59,14 +59,14 @@ class _006_VtoValidation_Test extends TestCase
         try {
             $obj = new BeEven(-1);
             $this->assertTrue(0, "Should not get this far");
-        } catch (\ElegantTechnologies\Cfd\Core\CfdError $e) {
+        } catch (\ElegantTechnologies\Cfd\Core\CfdErrorValidation $e) {
             $this->assertTrue(true, "Good - that faiiled as expected");
         }
 
         try {
             $obj = new BeEven(3);
             $this->assertTrue(0, "Should not get this far");
-        } catch (\ElegantTechnologies\Cfd\Core\CfdError $e) {
+        } catch (\ElegantTechnologies\Cfd\Core\CfdErrorValidation $e) {
             $this->assertTrue(true, "Good - that faiiled as expected");
         }
 

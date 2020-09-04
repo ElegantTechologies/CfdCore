@@ -28,3 +28,6 @@ php8-dev
             See: https://github.com/sebastianbergmann/phpunit/issues/4325
                 -try-
             composer require --dev phpunit/phpunit --ignore-platform-req=php phpunit/phpunit ^9.3\n
+            (or maybe...
+             composer require --dev phpunit/phpunit --ignore-platform-req=php
+             composer update --ignore-platform-req=php

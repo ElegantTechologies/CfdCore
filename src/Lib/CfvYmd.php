@@ -9,7 +9,7 @@ class CfvYmd extends \ElegantTechnologies\Cfd\Core\Cfv {
         if ($maybeValidValue == $t) {
             # ok
         } else {
-            throw new \ElegantTechnologies\Cfd\Core\CfdError("$t !=$maybeValidValue");
+            throw new \ElegantTechnologies\Cfd\Core\CfdErrorValidation("$t !=$maybeValidValue");
             #return new \SchoolTwist\Validations\Returns\DtoValid(['isValid' => false, 'enumReason'=>'NotRoundtripping','message'=>"$t !=$maybeValidValue" ]);
         }
     }

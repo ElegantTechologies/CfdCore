@@ -4,33 +4,34 @@ namespace testworld;
 
 use PHPUnit\Framework\TestCase;
 
-
-class CfdEnumPhase3 extends \ElegantTechnologies\Cfd\Lib\Cfes {
-    /** @var array */
-    public array $EnumValues;
-    public static array $_ArrEnumValuePossibilities = ['Draft', 'RollOut', 'LaunchPad', 'OnOrbit', 'Descent', 'Museum', 'Trash'];
+class CfdEnumPhase2 extends \ElegantTechnologies\Cfd\Lib\Cfes {
+    public function __construct(public array $value,)
+    {
+        parent::__construct(['Draft', 'RollOut', 'LaunchPad', 'OnOrbit', 'Descent', 'Museum', 'Trash']);
+    }
 }
 
-final class TestDtoEnumPhase3 extends TestCase {
+final class DtoEnumValues_doesHave_Test extends TestCase {
     function testBad()
     {
-        $obj = new CfdEnumPhase2(['EnumValues' => ['Draft']]);
+        $obj = new CfdEnumPhase2(['Draft']);
         $this->assertTrue(isset($obj), "Good");
         $this->assertFalse($obj->doesHaveThis('Prod'), "Good");
         $this->assertFalse($obj->doesHaveThis(null), "Good");
         $this->assertFalse($obj->doesHaveThis(1), "Good");
         $this->assertFalse($obj->doesHaveThis(true), "Good");
         $this->assertFalse($obj->doesHaveThis(''), "Good");
+        $this->assertTrue($obj->doesHaveThis('Draft'), "Good");
     }
     function testGood() {
-        $obj = new CfdEnumPhase2(['EnumValues' => ['Draft']]);
+        $obj = new CfdEnumPhase2(['Draft']);
         $this->assertTrue(isset($obj), "Good");
         $this->assertTrue($obj->doesHaveThis('Draft'), "Good");
     }
 
   function testBad2()
     {
-        $obj = new CfdEnumPhase2(['EnumValues' => ['Draft']]);
+        $obj = new CfdEnumPhase2(['Draft']);
         $this->assertTrue(isset($obj), "Good");
         $this->assertFalse($obj->doesHaveThese(['Prod']), "Good");
         $this->assertFalse($obj->doesHaveThese([null]), "Good");
@@ -41,7 +42,7 @@ final class TestDtoEnumPhase3 extends TestCase {
 
     function testBad4()
     {
-        $obj = new CfdEnumPhase2(['EnumValues' => ['Draft']]);
+        $obj = new CfdEnumPhase2(['Draft']);
         $this->assertTrue(isset($obj), "Good");
          try {
              $isTrue = $obj->doesHaveThese('Prod');
@@ -61,17 +62,17 @@ final class TestDtoEnumPhase3 extends TestCase {
 
 
     function testGood2() {
-        $obj = new CfdEnumPhase2(['EnumValues' => ['Draft']]);
+        $obj = new CfdEnumPhase2(['Draft']);
         $this->assertTrue(isset($obj), "Good");
         $this->assertTrue($obj->doesHaveThese(['Draft']), "Good");
     }
     function testGood3() {
-        $obj = new CfdEnumPhase2(['EnumValues' => ['Draft','RollOut']]);
+        $obj = new CfdEnumPhase2(['Draft','RollOut']);
         $this->assertTrue(isset($obj), "Good");
         $this->assertTrue($obj->doesHaveThese(['Draft']), "Good");
     }
     function testGood4() {
-        $obj = new CfdEnumPhase2(['EnumValues' => ['Draft', 'RollOut', 'LaunchPad', 'OnOrbit', 'Descent']]);
+        $obj = new CfdEnumPhase2(['Draft', 'RollOut', 'LaunchPad', 'OnOrbit', 'Descent']);
         $this->assertTrue(isset($obj), "Good");
         $this->assertTrue($obj->doesHaveThese(['Draft','RollOut']), "Good");
         $this->assertTrue($obj->doesHaveThese(['RollOut','Draft']), "Good");
@@ -83,7 +84,7 @@ final class TestDtoEnumPhase3 extends TestCase {
 
      function testBadOnly()
     {
-        $obj = new CfdEnumPhase2(['EnumValues' => ['Draft','RollOut']]);
+        $obj = new CfdEnumPhase2(['Draft','RollOut']);
         $this->assertTrue(isset($obj), "Good");
         $this->assertFalse($obj->doesHaveOnlyThis('Prod'), "Good");
         $this->assertFalse($obj->doesHaveOnlyThis('Draft'), "Good");
@@ -91,7 +92,7 @@ final class TestDtoEnumPhase3 extends TestCase {
         $this->assertFalse($obj->doesHaveOnlyThis(true), "Good");
         $this->assertFalse($obj->doesHaveOnlyThis(''), "Good");
 
-          $obj = new CfdEnumPhase2(['EnumValues' => ['Draft']]);
+          $obj = new CfdEnumPhase2(['Draft']);
         $this->assertTrue(isset($obj), "Good");
         $this->assertFalse($obj->doesHaveOnlyThis('Prod'), "Good");
         $this->assertFalse($obj->doesHaveOnlyThis('Rollout'), "Good");
@@ -100,7 +101,7 @@ final class TestDtoEnumPhase3 extends TestCase {
 
     }
     function testGoodOnly() {
-        $obj = new CfdEnumPhase2(['EnumValues' => ['Draft']]);
+        $obj = new CfdEnumPhase2(['Draft']);
         $this->assertTrue(isset($obj), "Good");
         $this->assertTrue($obj->doesHaveOnlyThis('Draft'), "Good");
     }

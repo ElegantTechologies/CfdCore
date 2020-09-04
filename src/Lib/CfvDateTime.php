@@ -13,7 +13,7 @@ class CfvDateTime extends \ElegantTechnologies\Cfd\Core\Cfv {
         if ($maybeValidValue == $t) {
             // good
         } else {
-            throw new \ElegantTechnologies\Cfd\Core\CfdError("$t !=$maybeValidValue Please pass data as exaclty $format ");
+            throw new \ElegantTechnologies\Cfd\Core\CfdErrorValidation("$t !=$maybeValidValue Please pass data as exaclty $format ");
             #return new \SchoolTwist\Validations\Returns\DtoValid(['isValid' => false, 'enumReason'=>'NotRoundtripping','message'=>"$t !=$maybeValidValue Please pass data as exaclty $format " ]);
         }
     }

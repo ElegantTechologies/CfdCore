@@ -38,76 +38,77 @@ class DtoDbWip_Basket extends \ElegantTechnologies\Cfd\Core\Cfd {
       PRIMARY KEY (`Uuid`)
     ) ENGINE=MyISAM DEFAULT CHARSET=utf8
     */
+    public function __construct(public string $Uuid, public \ElegantTechnologies\Cfd\Lib\CfvDateTime $DtoDateTime_BornOn) {
+         parent::__construct(...func_get_args());
+         }
 
 
-    public string $Uuid;
 
-    public \ElegantTechnologies\Cfd\Lib\CfvDateTime $DtoDateTime_BornOn;
 
     #public $DtoEnumValue_BasketPhase; // untracked 8/20 'untracked isn't a thing
 }
 
 
 
-final class TestDtoDateTime2 extends TestCase {
+final class DtoDateTime_SubTest extends TestCase {
 
 
     function testMakeBad()
     {
         try {
             $badDbt = ';lakjsdf;';
-            $obj = new \ElegantTechnologies\Cfd\Lib\CfvDateTime(['Value' => $badDbt]);
+            $obj = new \ElegantTechnologies\Cfd\Lib\CfvDateTime($badDbt);
             $this->assertTrue(0, "1Should not get this far ut: " . strtotime($badDbt));
         } catch (\ElegantTechnologies\Cfd\Core\CfdError $e) {
             $this->assertTrue(true, "1Good - that faiiled as expected");
         }
 
         try {
-            $obj = new \ElegantTechnologies\Cfd\Lib\CfvDateTime(['Value' => 0]);
+            $obj = new \ElegantTechnologies\Cfd\Lib\CfvDateTime(0);
             $this->assertTrue(0, "2Should not get this far");
-        } catch (\ElegantTechnologies\Cfd\Core\CfdError $e) {
+        } catch (\TypeError $e) {
             $this->assertTrue(true, "2Good - that faiiled as expected");
         }
 
 
         try {
-            $obj = new \ElegantTechnologies\Cfd\Lib\CfvDateTime(['Value' => 1970]);
+            $obj = new \ElegantTechnologies\Cfd\Lib\CfvDateTime(1970);
             $this->assertTrue(0, "3Should not get this far");
-        } catch (\ElegantTechnologies\Cfd\Core\CfdError $e) {
+        } catch (\TypeError $e) {
             $this->assertTrue(true, "3Good - 1970 iis not a string, plus it is a vague date");
         }
 
         try {
-            $obj = new \ElegantTechnologies\Cfd\Lib\CfvDateTime(['Value' => 'tomorrow']);
+            $obj = new \ElegantTechnologies\Cfd\Lib\CfvDateTime('tomorrow');
             $this->assertTrue(0, "4Should not get this far");
-        } catch (\ElegantTechnologies\Cfd\Core\CfdError $e) {
+        } catch (\ElegantTechnologies\Cfd\Core\CfdErrorValidation $e) {
             $this->assertTrue(true, "4Good - that faiiled as expected");
         }
 
         try {
-            $obj = new \ElegantTechnologies\Cfd\Lib\CfvDateTime(['Value' => '1970-11-04']);
+            $obj = new \ElegantTechnologies\Cfd\Lib\CfvDateTime('1970-11-04');
             $this->assertTrue(0, "4Should not get this far");
-        } catch (\ElegantTechnologies\Cfd\Core\CfdError $e) {
+        } catch (\TypeError $e) {
             $this->assertTrue(true, "4Good - that faiiled as expected. Needs a time after it.");
         }
     }
 
     function test_makeGood() {
 
-        $obj = new \ElegantTechnologies\Cfd\Lib\CfvDateTime(['Value'=>'1970-11-04 13:11:25']);
+        $obj = new \ElegantTechnologies\Cfd\Lib\CfvDateTime('1970-11-04 13:11:25');
         $this->assertTrue(isset($obj), "");
 
-        $obj = new \ElegantTechnologies\Cfd\Lib\CfvDateTime(['Value'=>\ElegantTechnologies\Cfd\Lib\CfvDateTime::now_asString()]);
+        $obj = new \ElegantTechnologies\Cfd\Lib\CfvDateTime(\ElegantTechnologies\Cfd\Lib\CfvDateTime::now_asString());
         $this->assertTrue(isset($obj), "");
 
     }
 
      function test_inheritenceCuzHadAnIssue() {
 
-        $obj = new CfdbDateTime(['Value'=>'1970-11-04 13:11:25']);
+        $obj = new CfdbDateTime('1970-11-04 13:11:25');
         $this->assertTrue(isset($obj), "");
 
-        $obj = new CfdbDateTime(['Value'=>\ElegantTechnologies\Cfd\Lib\CfvDateTime::now_asString()]);
+        $obj = new CfdbDateTime(\ElegantTechnologies\Cfd\Lib\CfvDateTime::now_asString());
         $this->assertTrue(isset($obj), "");
     }
 
@@ -116,13 +117,13 @@ final class TestDtoDateTime2 extends TestCase {
         // be bad
 
          try {
-             $DtoBasket = new DtoDbWip_Basket([
-                 'Uuid' => 'hi im uuid',
-                 'DtoEnumValue_BasketPhase' => 'untracked, so what evs',
-                 'DtoDateTime_BornOn' => new CfdbDateTimeWrong(['Value' => '1970-11-04 13:11:25']),
-             ]);
+             $DtoBasket = new DtoDbWip_Basket(
+                 Uuid:'hi im uuid',
+                 DtoEnumValue_BasketPhase:'untracked, so what evs',
+                 DtoDateTime_BornOn: new CfdbDateTimeWrong('1970-11-04 13:11:25'),
+             );
              $this->assertTrue(false, "never this far");
-         } catch (Throwable $e) {
+         } catch (\Error $e) {
              $this->assertTrue(true, "");
          }
 
@@ -139,11 +140,11 @@ final class TestDtoDateTime2 extends TestCase {
 
 
          // should work cuz decendant of base type
-        $DtoBasket = new DtoDbWip_Basket([
-             'Uuid' => 'hi im uuid',
+        $DtoBasket = new DtoDbWip_Basket(
+             Uuid:'hi im uuid',
              # 8/20' this used to be ok, but now ALL public properties must be typed. 'DtoEnumValue_BasketPhase' => 'untracked, so what evs',
-             'DtoDateTime_BornOn' => new CfdbDateTime(['Value' => '1970-11-04 13:11:25']),
-         ]);
+             DtoDateTime_BornOn: new CfdbDateTime('1970-11-04 13:11:25'),
+         );
          $this->assertTrue(true, "never this far");
 
 
